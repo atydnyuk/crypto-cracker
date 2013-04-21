@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import collections
 import itertools
 from collections import defaultdict
@@ -93,6 +95,5 @@ def replace_2(text,array):
             newrot.append(c)
     return newrot
 
-
-
-main()
+if __name__ == "__main__":
+    main()
