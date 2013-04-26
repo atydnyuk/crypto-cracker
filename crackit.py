@@ -24,7 +24,7 @@ def main():
     parser.add_option("-f", "--file", dest="filename", default="caesar3.txt",
                       help="Choose input file", metavar="FILE")
     parser.add_option("-e","--explicit", dest="explicit", default=False,
-                      help="Explicitly specify replacement array")
+                      help="Explicitly specify replacement array", metavar="ARRAY")
     parser.add_option("-q", "--freq", dest="freq", default=False,
                       action="store_true",help="Use frequency analysis")
     parser.add_option("-r", "--rot", dest="rot", default=False,
@@ -34,18 +34,41 @@ def main():
     f = open(options.filename,"r")
     text = f.read()
     print "This is the cipher read:\n"
-    print text;
+    print text
     
     text = text.lower()
     int_text = convert_to_int(text)
     basearray = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,
                  14,15,16,17,18,19,20,21,22,23,
                  24,25]
-    
+    if (options.explicit):
+        do_explicit(int_text,options.explicit)
+        return
     if (options.rot):
         try_rotations(int_text,basearray)
     if (options.freq):
         frequency_analysis(text,int_text)
+        
+def do_explicit(int_text,explicit):
+    print explicit
+    gen_list = explicit.split(',')
+    print gen_list
+
+    basearray = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,
+                 14,15,16,17,18,19,20,21,22,23,
+                 24,25]
+    d = defaultdict(int)
+    for word in int_text:
+        d[word] += 1
+    commons = Counter(d).most_common(26)
+    count = 0
+    
+    for k,v in commons:
+        if (k>=0 and k < 26):
+            basearray[k] = ord(gen_list[count])-97
+            count+=1
+
+    print ''.join(convert_to_text(replace_2(int_text,basearray)))
 
 def frequency_analysis(text,int_text):
     #list of letters in order of frequency
@@ -68,7 +91,8 @@ def frequency_analysis(text,int_text):
     print "\nFrequency analysis decrypt\n"
     print ''.join(convert_to_text(replace_2(int_text,basearray)))
     print "\n\nThe replacements were as follows : \n"
-    print freq_list
+    print ",".join(letters)
+    print ",".join(freq_list)
     print "\nReplace the letters that you want and relaunch with -e"
     
 def try_rotations(int_text,basearray):
