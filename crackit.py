@@ -136,8 +136,9 @@ def vigenere_analysis(text):
                 counter=0
             else:
                 counter+=1
-
-        print minitexts
+        print "".join(minitexts)
+        miniint = convert_to_int("".join(minitexts))
+        frequency_analysis("".join(minitexts),miniint)
             
         
      
