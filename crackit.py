@@ -2,9 +2,11 @@
 
 import collections
 import itertools
+import nltk
 from collections import defaultdict
 from collections import Counter
 from optparse import OptionParser
+from nltk import trigrams
 
 letters = ['a','b','c','d','e','f','g','h','i','j','k','l',
            'm','n','o','p','q','r','s','t','u','v','w','x',
@@ -29,14 +31,18 @@ def main():
                       action="store_true",help="Use frequency analysis")
     parser.add_option("-r", "--rot", dest="rot", default=False,
                       action="store_true",help="Use rotation brute force")
+    parser.add_option("-v","--vigenere",dest="vigenere",default=False,
+                      action="store_true",help="Use vigenere counter")
+
     (options, args) = parser.parse_args()
 
     f = open(options.filename,"r")
-    text = f.read()
+    text = f.read().replace("\n", "")
     print "This is the cipher read:\n"
     print text
     
     text = text.lower()
+    
     int_text = convert_to_int(text)
     basearray = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,
                  14,15,16,17,18,19,20,21,22,23,
@@ -48,6 +54,8 @@ def main():
         try_rotations(int_text,basearray)
     if (options.freq):
         frequency_analysis(text,int_text)
+    if (options.vigenere):
+        vigenere_analysis(text)
         
 def do_explicit(int_text,explicit):
     print explicit
@@ -105,6 +113,34 @@ def try_rotations(int_text,basearray):
             print "Rotation decrypt\n"
             print decrypt_string
 
+def vigenere_analysis(text):
+    print "Vigenere analysis\n"
+    tri_tokens = trigrams(text)
+    trigrams_counted = sorted(set(tri_tokens))
+    max_seen = 0
+    max_trigram = ('a','b','c')
+    for item in trigrams_counted:
+        if (tri_tokens.count(item) > max_seen):
+            max_trigram = item;
+            max_seen = tri_tokens.count(item)
+            print "new is " + str(max_trigram) + "with a count of "+str(max_seen)
+    for i in range(3,11):
+        print "we are trying a keylength of "+str(i)
+        minitexts = list()
+        for j in range(0,i):
+            minitexts.append("")
+        counter=0
+        for j in text:
+            minitexts[counter]+=j
+            if (counter==(i-1)):
+                counter=0
+            else:
+                counter+=1
+
+        print minitexts
+            
+        
+     
 def convert_to_int(text):
     array = []
     for c in text:
