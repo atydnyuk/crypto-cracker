@@ -1,0 +1,60 @@
+import nltk
+from nltk import trigrams
+from collections import defaultdict
+from collections import Counter
+
+class Vigenere:
+    def separate_into_caesar_list(self,text,i):
+        print "we are trying a keylength of "+str(i)
+        minitexts = list()
+        for j in range(0,i):
+            minitexts.append("")
+            counter=0
+        for j in text:
+            minitexts[counter]+=j
+            if (counter==(i-1)):
+                counter=0
+            else:
+                counter+=1
+        return minitexts
+
+
+    def vigenere_analysis(self,text):
+        print "Vigenere analysis\n"
+        tri_tokens = trigrams(text)
+        trigrams_counted = sorted(set(tri_tokens))
+        max_seen = 0
+        max_trigram = ('a','b','c')
+        for item in trigrams_counted:
+            if (tri_tokens.count(item) > max_seen):
+                max_trigram = item;
+                max_seen = tri_tokens.count(item)
+                print "new is " + str(max_trigram) + "with a count of "+str(max_seen)
+        #for now we will skip the part where we find the keylength
+        for i in range(3,11):
+            minitexts = self.separate_into_caesar_list(text,i)
+            code = self.find_code_from_caesar_list(minitexts)
+                        
+    def find_code_from_caesar_list(self,textlist):
+        code = ""
+        for item in textlist:
+            common = self.most_common_letter(item)
+            code_letter = self.subtract_letters(common,'e')
+            code += code_letter
+        print code
+        return code
+
+    def most_common_letter(self,text):
+        d = defaultdict(int)
+        for letter in text:
+            d[letter] += 1
+            commons = Counter(d).most_common(26)
+        return commons[0][0]
+        
+    def subtract_letters(self,a,b):
+        difference = ord(a) - ord(b)
+        if (difference < 0):
+            difference = 26+difference
+        return str(unichr(difference+97))
+
+    def decipher_with_code(self,text,code)

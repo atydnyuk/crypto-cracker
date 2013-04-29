@@ -1,12 +1,11 @@
 #!/usr/bin/python
-
 import collections
 import itertools
-import nltk
+import vigenere
 from collections import defaultdict
 from collections import Counter
 from optparse import OptionParser
-from nltk import trigrams
+
 
 letters = ['a','b','c','d','e','f','g','h','i','j','k','l',
            'm','n','o','p','q','r','s','t','u','v','w','x',
@@ -55,7 +54,8 @@ def main():
     if (options.freq):
         frequency_analysis(text,int_text)
     if (options.vigenere):
-        vigenere_analysis(text)
+        v = vigenere.Vigenere()
+        v.vigenere_analysis(text)
         
 def do_explicit(int_text,explicit):
     print explicit
@@ -112,34 +112,6 @@ def try_rotations(int_text,basearray):
         if ("the" in decrypt_string):
             print "Rotation decrypt\n"
             print decrypt_string
-
-def vigenere_analysis(text):
-    print "Vigenere analysis\n"
-    tri_tokens = trigrams(text)
-    trigrams_counted = sorted(set(tri_tokens))
-    max_seen = 0
-    max_trigram = ('a','b','c')
-    for item in trigrams_counted:
-        if (tri_tokens.count(item) > max_seen):
-            max_trigram = item;
-            max_seen = tri_tokens.count(item)
-            print "new is " + str(max_trigram) + "with a count of "+str(max_seen)
-    for i in range(3,11):
-        print "we are trying a keylength of "+str(i)
-        minitexts = list()
-        for j in range(0,i):
-            minitexts.append("")
-        counter=0
-        for j in text:
-            minitexts[counter]+=j
-            if (counter==(i-1)):
-                counter=0
-            else:
-                counter+=1
-        print "".join(minitexts)
-        miniint = convert_to_int("".join(minitexts))
-        frequency_analysis("".join(minitexts),miniint)
-            
         
      
 def convert_to_int(text):
