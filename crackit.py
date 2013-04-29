@@ -32,7 +32,10 @@ def main():
                       action="store_true",help="Use rotation brute force")
     parser.add_option("-v","--vigenere",dest="vigenere",default=False,
                       action="store_true",help="Use vigenere counter")
+    parser.add_option("-k","--key",dest="key",default="",
+                      help="Pass the decryption key", metavar="KEY")
 
+    
     (options, args) = parser.parse_args()
 
     f = open(options.filename,"r")
@@ -55,7 +58,11 @@ def main():
         frequency_analysis(text,int_text)
     if (options.vigenere):
         v = vigenere.Vigenere()
-        v.vigenere_analysis(text)
+        if (len(options.key)!=0):
+            print "\n\nDecrypt vigenere with key: "+options.key+"\n\n"
+            v.decipher_with_code(text,options.key)
+        else:
+            v.vigenere_analysis(text)
         
 def do_explicit(int_text,explicit):
     print explicit

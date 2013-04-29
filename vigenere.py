@@ -31,10 +31,11 @@ class Vigenere:
                 max_seen = tri_tokens.count(item)
                 print "new is " + str(max_trigram) + "with a count of "+str(max_seen)
         #for now we will skip the part where we find the keylength
-        for i in range(3,11):
+        for i in range(3,21):
             minitexts = self.separate_into_caesar_list(text,i)
             code = self.find_code_from_caesar_list(minitexts)
-                        
+            self.decipher_with_code(text,code)
+
     def find_code_from_caesar_list(self,textlist):
         code = ""
         for item in textlist:
@@ -57,4 +58,17 @@ class Vigenere:
             difference = 26+difference
         return str(unichr(difference+97))
 
-    def decipher_with_code(self,text,code)
+    def decipher_with_code(self,text,code):
+        result = ""
+        keylength = len(code)
+        index = 0
+        for letter in text:
+            diff = ord(letter)-ord(code[index%keylength])
+            if (diff < 0):
+                diff+=26
+            decoded=unichr(diff+ord('a'))
+            result+=decoded
+            index+=1
+        print result
+        return result
+    
