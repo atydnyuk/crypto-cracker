@@ -34,6 +34,8 @@ def main():
                       action="store_true",help="Use vigenere counter")
     parser.add_option("-k","--key",dest="key",default="",
                       help="Pass the decryption key", metavar="KEY")
+    parser.add_option("-l","--keylength",dest="keylength",default="",
+                      help="Specify the vigenere key length", metavar="LENGTH")
 
     
     (options, args) = parser.parse_args()
@@ -62,7 +64,10 @@ def main():
             print "\n\nDecrypt vigenere with key: "+options.key+"\n\n"
             v.decipher_with_code(text,options.key)
         else:
-            v.vigenere_analysis(text)
+            if (len(options.keylength)!=0):
+                v.vigenere_given_length(int(options.keylength),text)
+            else:
+                v.vigenere_analysis(text)
         
 def do_explicit(int_text,explicit):
     print explicit

@@ -36,6 +36,12 @@ class Vigenere:
             code = self.find_code_from_caesar_list(minitexts)
             self.decipher_with_code(text,code)
 
+    def vigenere_given_length(self,length,text):
+        minitexts = self.separate_into_caesar_list(text,length)
+        code = self.find_code_from_caesar_list(minitexts)
+        self.decipher_with_code(text,code)
+
+
     def find_code_from_caesar_list(self,textlist):
         code = ""
         for item in textlist:
