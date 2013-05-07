@@ -181,7 +181,7 @@ class VigCrack(Vigenere):
 
     # Unless otherwise specified, test for codewords between (and including)
     # these two lengths:
-    __default_min_codeword_length = 5
+    __default_min_codeword_length = 3
     __default_max_codeword_length = 9
 
     # The following are language-specific data on character frequencies.
