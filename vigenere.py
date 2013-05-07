@@ -21,15 +21,7 @@ class Vigenere:
 
     def vigenere_analysis(self,text):
         print "Vigenere analysis\n"
-        tri_tokens = trigrams(text)
-        trigrams_counted = sorted(set(tri_tokens))
-        max_seen = 0
-        max_trigram = ('a','b','c')
-        for item in trigrams_counted:
-            if (tri_tokens.count(item) > max_seen):
-                max_trigram = item;
-                max_seen = tri_tokens.count(item)
-                print "new is " + str(max_trigram) + "with a count of "+str(max_seen)
+        
         #for now we will skip the part where we find the keylength
         for i in range(3,21):
             minitexts = self.separate_into_caesar_list(text,i)

@@ -2,6 +2,7 @@
 import collections
 import itertools
 import vigenere
+import pygenere
 from collections import defaultdict
 from collections import Counter
 from optparse import OptionParser
