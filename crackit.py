@@ -2,7 +2,6 @@
 import collections
 import itertools
 import vigenere
-import pygenere
 from collections import defaultdict
 from collections import Counter
 from optparse import OptionParser
@@ -37,8 +36,6 @@ def main():
                       help="Pass the decryption key", metavar="KEY")
     parser.add_option("-l","--keylength",dest="keylength",default="",
                       help="Specify the vigenere key length", metavar="LENGTH")
-    parser.add_option("-p","--pygenere",dest="pygenere",default=False,
-                      action="store_true",help="Use pygenere to crack")
     
     
     (options, args) = parser.parse_args()
@@ -61,12 +58,6 @@ def main():
         try_rotations(int_text,basearray)
     if (options.freq):
         frequency_analysis(text,int_text)
-    if (options.pygenere):
-        print "\nDefault Pygenere Results\n"
-        x = pygenere.VigCrack(pygenere.Vigenere(text))
-        print "The codeword is " +str(x.crack_codeword())
-        print "The message is "+str(x.crack_message())
-        
     if (options.vigenere):
         v = vigenere.Vigenere()
         if (len(options.key)!=0):
